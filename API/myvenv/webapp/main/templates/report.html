@@ -1,0 +1,140 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+        .div_table {
+            position: absolute;
+            width: 1710px;
+            height: 818px;
+            left: 111px;
+            top: 116px;
+
+            background: #FFFFFF;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+        /* .table {
+            display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 5px;
+
+    width: 1704px;
+    height: 60px;
+
+    background: #FFFFFF;
+
+   
+
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+        } */
+        .menu {
+            height: 100%; /* Full-height: remove this if you want "auto" height */
+            width: 70px; /* Set the width of the sidebar */
+            position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+            z-index: 1; /* Stay on top */
+            top: 0; /* Stay at the top */
+            left: 0;
+            background: #9494FF;
+            border-radius: 5px; /* Black */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 20px;
+}       .menu a {
+        padding: 30px 8px 30px 16px;
+        text-decoration: none;
+        display: block;
+}
+        
+        
+            
+   
+        </style> 
+    </head>
+    <body bgcolor="#F3F3FA">
+        <div>
+            <p style="position: absolute;
+            width: 277px;
+            height: 28px;
+            left: 111px;
+            top: 20px;
+            
+            font-family: 'Verdana', sans-serif;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 28px;
+            line-height: 34px;
+            
+            color: #000061;">Отчёт</p>
+        </div>
+        <div class="menu">
+            {% load static %}
+            <a href="http://127.0.0.1:8000"><img src="{% static 'webapp/images/home_off.png' %}" width="32" height="32"></a>
+            <a href="/statistic"><img src="{% static 'webapp/images/stats_off.png' %}" width="32" height="32"></a>
+            <a href="/report"><img src="{% static 'webapp/images/document_on.png' %}" width="32" height="32"></a>
+            <a href="/settings"><img src="{% static 'webapp/images/settings_off.png' %}" width="32" height="32"></a>
+        </div>
+        {% block content %}
+        <div class="div_table">
+            <table id="report" class="display" style="padding-top: 20px; align-self: center; font-family: 'Verdana'; color: #000061; ">
+                <thead>
+                    <tr>
+                        <th>Фото нарушителя</th>
+                        <th>ФИО</th>
+                        <th>Телефон</th>
+                        <th>E-mail</th>
+                        <th>Отдел</th>
+                        <th>Дата нарушения</th>
+                        <th>Время нарушения</th>
+                        <th>Фото нарушения</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Row 1 Data 1</td>
+                        <td>Романенко Виктор Влексеевич</td>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                    </tr>
+                    <tr>
+                        <td>Row 2 Data 1</td>
+                        <td>Row 2 Data 2</td>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                        <td>Row 1 Data 1</td>
+                        <td>Row 1 Data 2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        {% endblock %}
+
+
+        {% block js_stuff %}
+            <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
+        
+            <script type="text/javascript">
+                $(document).ready( function () {
+                    $('#report').DataTable({
+
+                    });
+                } );
+            </script>
+        {% endblock %}
+
+    </body>  
+</html>
