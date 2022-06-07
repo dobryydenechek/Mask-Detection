@@ -1,0 +1,398 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
+        .menu {
+            height: 100%; /* Full-height: remove this if you want "auto" height */
+            width: 70px; /* Set the width of the sidebar */
+            position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+            z-index: 1; /* Stay on top */
+            top: 0; /* Stay at the top */
+            left: 0;
+            background: #9494FF;
+            border-radius: 5px; /* Black */
+            overflow-x: hidden; /* Disable horizontal scroll */
+            padding-top: 20px;
+}       .menu a {
+        padding: 30px 8px 30px 16px;
+        text-decoration: none;
+        display: block;
+}
+        .container2 {
+            position: absolute;
+            width: 859px;
+            height: 242px;
+            left: 111px;
+            top: 550px;
+
+            background: #FFFFFF;
+            border-radius: 15px;
+            }
+
+            .highcharts-figure,
+            .highcharts-data-table table {
+            min-width: 310px;
+            max-width: 800px;
+            margin: 1em auto;
+            }
+
+            .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #ebebeb;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            }
+
+            .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+            }
+
+            .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+            }
+
+            .highcharts-data-table td,
+            .highcharts-data-table th,
+            .highcharts-data-table caption {
+            padding: 0.5em;
+            }
+
+            .highcharts-data-table thead tr,
+            .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+            }
+
+            .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+            }
+
+            .container {
+            position: absolute;
+            width: 820px;
+            height: 240px;
+            left: 1011px;
+            top: 550px;
+
+            background: #FFFFFF;
+            border-radius: 15px;
+            }
+
+            .highcharts-figure,
+            .highcharts-data-table table {
+            min-width: 310px;
+            max-width: 800px;
+            margin: 1em auto;
+            }
+
+            .highcharts-data-table table {
+            font-family: Verdana, sans-serif;
+            border-collapse: collapse;
+            border: 1px solid #ebebeb;
+            margin: 10px auto;
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+            }
+
+            .highcharts-data-table caption {
+            padding: 1em 0;
+            font-size: 1.2em;
+            color: #555;
+            }
+
+            .highcharts-data-table th {
+            font-weight: 600;
+            padding: 0.5em;
+            }
+
+            .highcharts-data-table td,
+            .highcharts-data-table th,
+            .highcharts-data-table caption {
+            padding: 0.5em;
+            }
+
+            .highcharts-data-table thead tr,
+            .highcharts-data-table tr:nth-child(even) {
+            background: #f8f8f8;
+            }
+
+            .highcharts-data-table tr:hover {
+            background: #f1f7ff;
+            }
+        .container3 {
+            position: absolute;
+            width: 1720px;
+            height: 380px;
+            left: 111px;
+            top: 117px;
+        }    
+        .highcharts-figure,
+        .highcharts-data-table table {
+        min-width: 360px;
+        max-width: 800px;
+        margin: 1em auto;
+        }
+
+        .highcharts-data-table table {
+        font-family: Verdana, sans-serif;
+        border-collapse: collapse;
+        border: 1px solid #ebebeb;
+        margin: 10px auto;
+        text-align: center;
+        width: 100%;
+        max-width: 500px;
+        }
+
+        .highcharts-data-table caption {
+        padding: 1em 0;
+        font-size: 1.2em;
+        color: #555;
+        }
+
+        .highcharts-data-table th {
+        font-weight: 600;
+        padding: 0.5em;
+        }
+
+        .highcharts-data-table td,
+        .highcharts-data-table th,
+        .highcharts-data-table caption {
+        padding: 0.5em;
+        }
+
+        .highcharts-data-table thead tr,
+        .highcharts-data-table tr:nth-child(even) {
+        background: #f8f8f8;
+        }
+
+        .highcharts-data-table tr:hover {
+        background: #f1f7ff;
+        }
+        </style> 
+    </head>
+    <body bgcolor="#F3F3FA">
+        
+        <div class="menu">
+            {% load static %}
+            <a href="http://127.0.0.1:8000"><img src="{% static 'webapp/images/home_off.png' %}" width="32" height="32"></a>
+            <a href="/statistic"><img src="{% static 'webapp/images/stats_on.png' %}" width="32" height="32"></a>
+            <a href="/report"><img src="{% static 'webapp/images/document_off.png' %}" width="32" height="32"></a>
+            <a href="/settings"><img src="{% static 'webapp/images/settings_off.png' %}" width="32" height="32"></a>
+        </div>
+{% block content %}
+    <div>
+        <p style="position: absolute;
+        width: 277px;
+        height: 28px;
+        left: 111px;
+        top: 20px;
+        
+        font-family: 'Verdana', sans-serif;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 28px;
+        line-height: 34px;
+        
+        color: #000061;">Статистика</p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div id="container_1" class="chart-container"></div>
+        </div>
+    </div>
+    <div class="container2">
+        <div class="row">
+            <div id="container_2" class="chart-container"></div> 
+        </div>
+    </div>
+    <div class="container3">
+        <div class="row">
+            <div id="container_3" class="chart-container"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block js_stuff %}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script type="text/javascript">
+        Highcharts.chart('container_1', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Статистика по камерам',
+            style: {"font-family": 'Verdana', "color": '#000061'}
+            },
+            xAxis: {
+                categories: ['Холл', 'Коридор 1', 'Коридор 2', 'Приемная']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                    }
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+                shared: true
+            },
+            
+            plotOptions: {
+                column: {
+                    stacking: 'percent'
+                }
+            },
+            series: [{
+                name: 'В масках',
+                data: [15, 43, 21, 10],
+                color: '#A3C684'
+                }, {
+                name: 'В неправильно надетых масках',
+                data: [32, 26, 15, 3],
+                color: '#9494FF'
+                }, {
+                name: 'Без масок',
+                data: [10, 8, 2, 16],
+                color: '#FF9494'
+            }]
+        });
+    </script>
+{% endblock %}  
+{% block js_stuff1 %}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script type="text/javascript">
+        Highcharts.chart('container_2', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Статистика по отделам',
+            style: {"font-family": 'Verdana', "color": '#000061'}
+            },
+            xAxis: {
+                categories: ['Отдел продаж', 'Отдел IT', 'Отдел маркетинга', 'Отдел кадров', 'Финансовый отдел']
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ''
+                    }
+            },
+            tooltip: {
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+                shared: true
+            },
+            
+            plotOptions: {
+                column: {
+                    stacking: 'percent'
+                }
+            },
+            series: [{
+                name: 'В масках',
+                data: [15, 9, 21, 18, 2],
+                color: '#A3C684'
+                }, {
+                name: 'В неправильно надетых масках',
+                data: [40, 26, 15, 32, 7],
+                color: '#9494FF'
+                }, {
+                name: 'Без масок',
+                data: [10, 16, 8, 2, 18],
+                color: '#FF9494'
+            }]
+        });
+    </script>
+{% endblock %}  
+
+{% block js_stuff2 %}
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+    <script type="text/javascript">
+        Highcharts.chart('container_3', {
+
+            title: {
+            text: 'Статистика нарушений за месяц',
+            style: {"font-family": 'Verdana', "color": '#000061'}
+            },
+
+            subtitle: {
+            text: ''
+            },
+
+            yAxis: {
+            title: {
+                text: ''
+            }
+            },
+
+            xAxis: {
+                categories: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+            },
+
+            legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle'
+            },
+
+            plotOptions: {
+            series: {
+                label: {
+                connectorAllowed: false
+                }
+            }
+            },
+
+            series: [{
+                name: 'В масках',
+                data: [15, 9, 21, 18, 2, 40, 26, 15, 32, 7, 2, 10],
+                color: '#A3C684'
+                }, {
+                name: 'В неправильно надетых масках',
+                data: [40, 26, 15, 32, 7, 2, 10, 16, 8, 2, 16, 8],
+                color: '#9494FF'
+                }, {
+                name: 'Без масок',
+                data: [10, 16, 8, 2, 10, 16, 8, 2, 16, 8, 2, 18],
+                color: '#FF9494'
+            }],
+
+            responsive: {
+            rules: [{
+                condition: {
+                maxWidth: 500
+                },
+                chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+                }
+            }]
+            }
+
+        });
+        
+    </script>
+{% endblock %}  
+    </body>  
+</html>
