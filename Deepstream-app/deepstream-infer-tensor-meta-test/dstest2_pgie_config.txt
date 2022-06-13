@@ -62,7 +62,6 @@ model-color-format=0
 model-engine-file=/opt/nvidia/deepstream/deepstream-6.0/sources/apps/sample_apps/deepstream-infer-tensor-meta-test/model_b1_gpu0_fp16.engine
 model-file=/home/cv/Desktop/Mask-Detection/Deepstream-app/best.wts
 custom-network-config=/home/cv/Desktop/Mask-Detection/Deepstream-app/best.cfg
-# onnx-file=/home/cv/Desktop/CV.Hermes/deepstream_python_apps/apps/deepstream_video_yolov5/yolov5.onnx
 infer-dims=3;640;640;
 batch-size=3
 gie-unique-id=40001
@@ -78,5 +77,5 @@ force-implicit-batch-dim=1
 
 parse-bbox-func-name=NvDsInferParseYolo
 custom-lib-path=/home/cv/Desktop/CV.Hermes/deepstream_apps/nvdsinfer_custom_impl_Yolo/libnvdsinfer_custom_impl_Yolo.so
-labelfile-path=/home/cv/Desktop/CV.Hermes/deepstream_apps/deepstream_video_inference/labels.txt
+labelfile-path=/home/cv/Desktop/Mask-Detection/Deepstream-app/labels.txt
 engine-create-func-name=NvDsInferYoloCudaEngineGet

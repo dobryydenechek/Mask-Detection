@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Thu Jun  9 18:53:58 2022
+# Make data base, printed on Tue Jun 14 01:43:47 2022
 
 # Variables
 
@@ -181,7 +181,7 @@ SHLVL = 2
 # environment
 IM_CONFIG_PHASE = 2
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-ed959300-bee0-4c85-b717-0d49e932a40d.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-eee6823f-265a-4eae-886d-1aa950f03a96.sock
 # environment
 COMPIZ_CONFIG_PROFILE = ubuntu
 # default
@@ -280,8 +280,8 @@ JETSON_SERIAL_NUMBER = 1425221029025
 LC_ADDRESS = ru_RU.UTF-8
 # environment
 JETSON_MACHINE = NVIDIA Jetson AGX Xavier [16GB]
- 
 # environment
+ 
 LANG = C
 # environment
 VSCODE_PID = 9662
@@ -294,9 +294,9 @@ VSCODE_PID = 9662
 
 # Directories
 
-# . (device 45825, inode 558127): 6 files, no impossibilities.
+# . (device 45825, inode 565261): 7 files, no impossibilities.
 
-# 6 files, no impossibilities in 1 directories.
+# 7 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -346,12 +346,12 @@ GNUmakefile:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 14 / storage = 122 B / avg = 8 B
-# current buf: size = 8162 B / used = 122 B / count = 14 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 15 / storage = 138 B / avg = 9 B
+# current buf: size = 8162 B / used = 138 B / count = 15 / avg = 9 B
 
-# strcache performance: lookups = 17 / hit rate = 17%
+# strcache performance: lookups = 18 / hit rate = 16%
 # hash-table stats:
-# Load=14/8192=0%, Rehash=0, Collisions=1/17=6%
-# Finished Make data base on Thu Jun  9 18:53:58 2022
+# Load=15/8192=0%, Rehash=0, Collisions=1/18=6%
+# Finished Make data base on Tue Jun 14 01:43:47 2022
 
  

@@ -64,7 +64,7 @@
 #define OSD_PROCESS_MODE 0
 
 /* By default, OSD will not display text. To display text, change this to 1 */
-#define OSD_DISPLAY_TEXT 0
+#define OSD_DISPLAY_TEXT 1
 
 
 #define TILED_OUTPUT_WIDTH 1280
@@ -119,27 +119,15 @@ const guint sgie1_unique_id = 2;
 const guint sgie2_unique_id = 3;
 const guint sgie3_unique_id = 4;
 
+const gchar names[15][32] = {
+  "Unknown", "Unknown", "Unknown"", Unknown", "Unknown", "Unknown", "Unknown", "Putin", "Putin", "Putin", "Putin", "Putin", "Putin", "Putin"
+};
+
 /* nvds_lib_major_version and nvds_lib_minor_version is the version number of
  * deepstream sdk */
 
 unsigned int nvds_lib_major_version = NVDS_VERSION_MAJOR;
 unsigned int nvds_lib_minor_version = NVDS_VERSION_MINOR;
-
-
-double cosine_similarity(double *A, double *B, unsigned int Vector_Length)
-{
-    double dot = 0.0, denom_a = 0.0, denom_b = 0.0 ;
-    std::cout<<"Hello"<<std::endl;
-     for(unsigned int i = 0u; i < Vector_Length; ++i) {
-       std::cout<<"Hello"<<std::endl;
-       std::cout<<&A[i]<<std::endl;
-       std::cout<<&B[i]<<std::endl;
-        dot += A[i] * B[i] ;
-        denom_a += A[i] * A[i] ;
-        denom_b += B[i] * B[i] ;
-    }
-    return dot / (sqrt(denom_a) * sqrt(denom_b)) ;
-}
 
 /* This is the buffer probe function that we have registered on the sink pad
  * of the OSD element. All the infer elements in the pipeline shall attach
@@ -179,12 +167,6 @@ osd_sink_pad_buffer_probe (GstPad * pad, GstPadProbeInfo * info,
     NvOSD_TextParams *txt_params = &display_meta->text_params[0];
     display_meta->num_labels = 1;
     txt_params->display_text = (gchar *) g_malloc0 (MAX_DISPLAY_LEN);
-    offset =
-        snprintf (txt_params->display_text, MAX_DISPLAY_LEN, "Person = %d ",
-        person_count);
-    offset =
-        snprintf (txt_params->display_text + offset, MAX_DISPLAY_LEN,
-        "Vehicle = %d ", vehicle_count);
 
     /* Now set the offsets where the string should appear */
     txt_params->x_offset = 10;
@@ -359,67 +341,43 @@ pgie_pad_buffer_probe (GstPad * pad, GstPadProbeInfo * info, gpointer u_data)
 static GstPadProbeReturn
 sgie_pad_buffer_probe (GstPad * pad, GstPadProbeInfo * info, gpointer u_data)
 {
-  static guint use_device_mem = 0;
+  static guint use_device_mem = 5;
 
   NvDsBatchMeta *batch_meta =
       gst_buffer_get_nvds_batch_meta (GST_BUFFER (info->data));
-
   /* Iterate each frame metadata in batch */
   for (NvDsMetaList * l_frame = batch_meta->frame_meta_list; l_frame != NULL;
       l_frame = l_frame->next) {
     NvDsFrameMeta *frame_meta = (NvDsFrameMeta *) l_frame->data;
-
     /* Iterate object metadata in frame */
     for (NvDsMetaList * l_obj = frame_meta->obj_meta_list; l_obj != NULL;
         l_obj = l_obj->next) {
       NvDsObjectMeta *obj_meta = (NvDsObjectMeta *) l_obj->data;
-
       /* Iterate user metadata in object to search SGIE's tensor data */
       for (NvDsMetaList * l_user = obj_meta->obj_user_meta_list; l_user != NULL;
           l_user = l_user->next) {
         NvDsUserMeta *user_meta = (NvDsUserMeta *) l_user->data;
         if (user_meta->base_meta.meta_type != NVDSINFER_TENSOR_OUTPUT_META)
           continue;
-
         /* convert to tensor metadata */
         NvDsInferTensorMeta *meta =
             (NvDsInferTensorMeta *) user_meta->user_meta_data;
-        //std::cout<<"size "<< *(unsigned int *)meta->num_output_layers;
-        std::cout<<meta->num_output_layers<<std::endl;
-        NvDsInferLayerInfo *info = &meta->output_layers_info[1];
-        
-    
-        // std::string floatString;
-        double* ptr = (double*)meta->out_buf_ptrs_host[0];  // output layer 0
-        // for( size_t i=0; i<info->inferDims.numElements; i++ )
-        // {
-        //   std::cout<<(std::to_string(ptr[i]) + "; ")<<std::endl;
-        //   floatString.append(std::to_string(ptr[i]) + "; ");
-        // }
-        
-        // floatString = floatString + "\n";
-        // std::ofstream face_embeds_file;
-        // face_embeds_file.open ("/home/cv/Desktop/Mask-Detection/face_embeds.csv");
-        // face_embeds_file << floatString;
-        // face_embeds_file.close();
-
-
-        std::cout<<"Shape "<<info->inferDims.numElements<<std::endl;
-
+        NvDsInferLayerInfo *info = &meta->output_layers_info[0];
+        /* Reading CSV */
+        std::string line;
         typedef std::vector<std::string> LINE;
 
-        std::string line;
+        std::string l;
         int pos;
         std::vector<LINE> arr;
 
         std::ifstream in("/home/cv/Desktop/Mask-Detection/face_embeds.csv");
         if(!in.is_open())
         {
-          std::cout << "Failed to open file" << std::endl;
         }
-        std::cout<< "File opened"<<std::endl;
         while( getline(in,line) )
         {
+          l = line;
           LINE ln;
           while( (pos = line.find(';')) >= 0)
           {
@@ -430,31 +388,55 @@ sgie_pad_buffer_probe (GstPad * pad, GstPadProbeInfo * info, gpointer u_data)
           }
           arr.push_back(ln);
         }
+    
+        /*Writing tensor meta*/
+        std::string floatString;
+        float mean = 0;
+        float* ptr = (float*)meta->out_buf_ptrs_host[0];  // output layer 0
+        for( size_t i=0; i<info->inferDims.numElements; i++ )
+        {
+          floatString.append(std::to_string(ptr[i]) + "; ");
+          mean += ptr[i];
+        }
+        //std::cout<<floatString<<std::endl;
+        // floatString = floatString + "\n";
+        // std::ofstream face_embeds_file;
+        // face_embeds_file.open ("/home/cv/Desktop/Mask-Detection/face_embeds.csv");
+        // face_embeds_file << floatString;
+        // face_embeds_file << l + "\n";
+        // face_embeds_file.close();
 
         int index = 0;
         double max = 0.0;
         double cos = 0.0;
+        //std::cout<<"a.size()" << arr[0].size()<<std::endl;
         for (int i=0; i < arr.size(); ++i){
-            double doubleVector [1196];
+            std::cout<<i<<std::endl;
+            double doubleVector[512];
             for (int j =0; j < arr[i].size(); ++j){
-              doubleVector[i] = std::stod(arr[i][j]);
+              doubleVector[j] = std::stod(arr[i][j]);
             }
-            std::cout<<"D: "<<doubleVector[1]<<std::endl;
-            std::cout<<"P: "<<ptr[1]<<std::endl;
             double dot = 0.0, denom_a = 0.0, denom_b = 0.0 ;
-            for(unsigned int i = 0u; i < 128; ++i) {
-              dot += doubleVector[i] * ptr[i] ;
-              denom_a += doubleVector[i] * doubleVector[i] ;
-              denom_b += ptr[i] * ptr[i] ;
+            for(unsigned int k = 0u; k < 512; ++k) {
+              // std::cout<<"csv: "<<doubleVector[k]<<std::endl;
+              // std::cout<<"infer: "<<ptr[k]<<std::endl;
+              dot += doubleVector[k] * ptr[k] ;
+              denom_a += doubleVector[k] * doubleVector[k] ;
+              denom_b += ptr[k] * ptr[k] ;
             }
+             //std::cout<<"+_+_+_+_+_+"<<std::endl;
+             //std::cout<<"Step: "<<i<<std::endl;
              cos = dot / (sqrt(denom_a) * sqrt(denom_b)) ;
-             
+             //std::cout<<"COS: "<<cos<<std::endl;
              if(cos > max){
               max = cos;
-              index = i;
+              index = i + 1;
             }
         }   
-        std::cout<<cos<<std::endl;
+        if (max < 0.3){
+          index = 0;
+        }
+        //std::cout<<max<<std::endl;
 
 
         if (use_device_mem && meta->out_buf_ptrs_dev[1]) {
@@ -462,71 +444,28 @@ sgie_pad_buffer_probe (GstPad * pad, GstPadProbeInfo * info, gpointer u_data)
               info->inferDims.numElements * 4, cudaMemcpyDeviceToHost);
         }
 
-
-          
-        //NvDsInferDimsCHW dims;
-
-        //getDimsCHWFromDims (dims, meta->output_layers_info[0].inferDims);
-        //unsigned int numClasses = dims.c;
-        //float *outputCoverageBuffer = 
-            //(float *) meta->output_layers_info[0].buffer;
-        
-        //std::cout<<"gxxgsss"<<*(float *)meta->output_layers_info[0].buffer;
-        //float maxProbability = 0;
-        //bool attrFound = false;
-        //NvDsInferAttribute attr;
-
         /* Iterate through all the probabilities that the object belongs to
          * each class. Find the maximum probability and the corresponding class
          * which meets the minimum threshold. */
-        ///for (unsigned int c = 0; c < numClasses; c++) {
-          ///float probability = outputCoverageBuffer[c];
-          ///if (probability > 0.51 && probability > maxProbability) {
-            ///maxProbability = probability;
-            ///attrFound = true;
-            ///attr.attributeIndex = 0;
-            ///attr.attributeValue = c;
-            ///attr.attributeConfidence = probability;
-          ///}
-        ///}
-
+        
         /* Generate classifer metadata and attach to obj_meta */
-        ///if (attrFound) {
-          ///NvDsClassifierMeta *classifier_meta =
-              ///nvds_acquire_classifier_meta_from_pool (batch_meta);
+        
+        NvDsClassifierMeta *classifier_meta =
+            nvds_acquire_classifier_meta_from_pool (batch_meta);
 
-          ///classifier_meta->unique_component_id = meta->unique_id;
+        classifier_meta->unique_component_id = meta->unique_id;
 
-          ///NvDsLabelInfo *label_info =
-             /// nvds_acquire_label_info_meta_from_pool (batch_meta);
-          ///label_info->result_class_id = attr.attributeValue;
-          ///label_info->result_prob = attr.attributeConfidence;
+        NvDsLabelInfo *label_info =
+            nvds_acquire_label_info_meta_from_pool (batch_meta);
+        strcpy (label_info->result_label,names[index]);
+        gchar *temp = obj_meta->text_params.display_text;
+        obj_meta->text_params.display_text =
+            g_strconcat (temp, " ", label_info->result_label, nullptr);
+        g_free (temp);
 
-          /* Fill label name */
-          ///switch (meta->unique_id) {
-            ///case sgie1_unique_id:
-              ///strcpy (label_info->result_label,
-                  ///sgie1_classes_str[label_info->result_class_id]);
-              ///break;
-            ///case sgie2_unique_id:
-              ///strcpy (label_info->result_label,
-                  ///sgie2_classes_str[label_info->result_class_id]);
-              ///break;
-            ///case sgie3_unique_id:
-              ///strcpy (label_info->result_label,
-                  ///sgie3_classes_str[label_info->result_class_id]);
-              ///break;
-            ///default:
-              ///break;
-          ///}
-          ///gchar *temp = obj_meta->text_params.display_text;
-          ///obj_meta->text_params.display_text =
-              ///g_strconcat (temp, " ", label_info->result_label, nullptr);
-          ///g_free (temp);
-
-          ///nvds_add_label_info_meta_to_classifier (classifier_meta, label_info);
-          ///nvds_add_classifier_meta_to_object (obj_meta, classifier_meta);
-        ///}
+        nvds_add_label_info_meta_to_classifier (classifier_meta, label_info);
+        nvds_add_classifier_meta_to_object (obj_meta, classifier_meta);
+        
       }
      
     }
@@ -796,7 +735,7 @@ main (int argc, char *argv[])
   transform = gst_element_factory_make ("queue", "queue");
 #endif
   //sink = gst_element_factory_make ("nveglglessink", "nvvideo-renderer");
-  sink = gst_element_factory_make ("nvoverlaysink", "nvvideo-renderer");
+  sink = gst_element_factory_make ("nvvideoencfilesinkbin", "nvvideo-renderer");
 
   if (!pgie || !tiler || !nvvidconv || !nvosd || !sink) {
     g_printerr ("One element could not be created. Exiting.\n");
@@ -830,7 +769,8 @@ main (int argc, char *argv[])
   g_object_set (G_OBJECT (nvosd), "process-mode", OSD_PROCESS_MODE,
       "display-text", OSD_DISPLAY_TEXT, NULL);
 
-  g_object_set (G_OBJECT (sink), "qos", 0, NULL);
+  g_object_set (G_OBJECT (sink), "qos", false, NULL);
+  g_object_set (G_OBJECT (sink), "output-file", "out_vid.mp4", NULL);
 
   /* Set all the necessary properties of the infer plugin element,
    * Enable Output tensor meta, we can probe PGIE and
@@ -852,7 +792,7 @@ main (int argc, char *argv[])
     g_object_set (G_OBJECT (pgie), "config-file-path", INFERSERVER_PGIE_CONFIG_FILE,
         "batch-size", num_sources, NULL);
     g_object_set (G_OBJECT (sgie1), "config-file-path", INFERSERVER_SGIE1_CONFIG_FILE,
-        "process-mode", 2, NULL);
+        "process-mode", 1, NULL);
     //g_object_set (G_OBJECT (sgie2), "config-file-path", INFERSERVER_SGIE2_CONFIG_FILE,
         //"process-mode", 2, NULL);
     //g_object_set (G_OBJECT (sgie3), "config-file-path", INFERSERVER_SGIE3_CONFIG_FILE,
