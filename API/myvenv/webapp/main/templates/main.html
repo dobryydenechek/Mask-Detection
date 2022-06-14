@@ -1,6 +1,7 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="main.css" type="style.css">
         <style type="text/css">
         .menu {
             height: 100%; /* Full-height: remove this if you want "auto" height */
@@ -163,16 +164,16 @@
         } 
 
         .div_table {
-            position: absolute;
-            width: 753px;
-            height: 370px;
-            left: 111px;
-            bottom: 40px;
-
-            background: #FFFFFF;
-            display: flex;
-            justify-content: center;
-            padding: 10px;
+        position: relative;
+        width: 753px;
+        height: 370px;
+        left: 111px;
+        bottom: 0px;
+        top: 530px;
+        background: #FFFFFF;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
         }
         .video_div {
             position: absolute;
@@ -195,6 +196,7 @@
         </style> 
     </head>
     <body bgcolor="#F3F3FA">
+   
         <div>
             <p style="position: absolute;
             width: 477px;
@@ -215,7 +217,7 @@
             <a href="http://127.0.0.1:8000"><img src="{% static 'webapp/images/home_on.png' %}" width="32" height="32"></a>
             <a href="/statistic"><img src="{% static 'webapp/images/stats_off.png' %}" width="32" height="32"></a>
             <a href="/report"><img src="{% static 'webapp/images/document_off.png' %}" width="32" height="32"></a>
-            <a href="/settings"><img src="{% static 'webapp/images/settings_off.png' %}" width="32" height="32"></a>
+            <!-- <a href="/settings"><img src="{% static 'webapp/images/settings_off.png' %}" width="32" height="32"></a> -->
         </div>
         <div class="container">
             <div class="row">
@@ -350,7 +352,8 @@
         {% endblock %}
 
         {% block content %}
-        <div class="div_table">
+        <div class="div_table" style="font-family: 'Verdana'; color: #000061;">
+            {% if top_employees.count > 0 %}
             <table id="report" class="display" style="  font-family: 'Verdana'; color: #000061; ">
                 <thead>
                     <tr>
@@ -361,27 +364,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Романенко Виктор Алексеевич</td>
-                        <td>89613286543</td>
-                        <td>rva@work.ru</td>
-                        <td>20</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>Сидоренко Роман Викторович</td>
-                        <td>89613286543</td>
-                        <td>rva@work.ru</td>
-                        <td>18</td>
-                    </tr>
-                    <tr>
-                        <td>Сидоренко Роман Викторович</td>
-                        <td>89613286543</td>
-                        <td>rva@work.ru</td>
-                        <td>17</td>
-                    </tr>
+                    {% for employees in top_employees %}
+                        <tr><td>{{ employees.surname}} {{ employees.name}} {{ employees.patronymic}}</td><td>{{ employees.phone_number }}</td><td>{{ employees.email }}</td><td>{{ employees.number_of_offenses }}</td></tr>
+                    {% endfor %}
                 </tbody>
             </table>
+            {% endif %}
         </div>
         
         {% endblock %}
@@ -401,8 +389,8 @@
             </script>
         {% endblock %}
         <div class="video_div">
-            <div id="div1"><iframe width="808" height="476" src="https://www.youtube.com/watch?v=CJstQWviNSA" frameborder="0" allowfullscreen></iframe></div>
+            <div id="div1"><iframe width="808" height="476" src="https://youtu.be/WVtTHY7mxqU" frameborder="0" allowfullscreen></iframe></div>
         </div>
-        
+    </main>
     </body>  
 </html>

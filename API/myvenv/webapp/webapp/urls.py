@@ -26,4 +26,4 @@ urlpatterns = [
     path('statistic/', include('statistic.urls')),
     path('report/', include('report.urls')),
     path('settings/', include('settings.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
