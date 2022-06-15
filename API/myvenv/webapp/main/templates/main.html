@@ -235,74 +235,79 @@
         </div>
 
         {% block js_stuff %}
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/export-data.js"></script>
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-        <script type="text/javascript">
-            Highcharts.chart('container_1', {
-                chart: {
-                    type: 'area'
-                },
-                accessibility: {
-                    description: ''
-                },
-                title: {
-                    text: 'Нарушения за неделю',
-                    style: {"font-family": 'Verdana', "color": '#000061'}
-                },
-                subtitle: {
-                    text: ''
-                },
-                xAxis: {
-                    categories: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
-                    
-                },
-                yAxis: {
-                    min: 0,
-                title: {
-                    text: ''
-                    }
-                },
-                tooltip: {
-                    pointFormat: '{series.name} <b>{point.y:,.0f}</b><br/> человек'
-                },
-                plotOptions: {
-                    area: {
-                    pointStart: 0,
-                    marker: {
-                        enabled: false,
-                        symbol: 'circle',
-                        radius: 2,
-                        states: {
-                        hover: {
-                            enabled: true
+        <script>
+                data =  {{ data|safe }};
+
+                Highcharts.chart('container_1', {
+                    chart: {
+                        type: 'area'
+                    },
+                    accessibility: {
+                        description: ''
+                    },
+                    title: {
+                        text: 'Нарушения за неделю',
+                        style: {"font-family": 'Verdana', "color": '#000061'}
+                    },
+                    subtitle: {
+                        text: ''
+                    },
+                    xAxis: {
+                        categories: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+                        
+                    },
+                    yAxis: {
+                        min: 0,
+                    title: {
+                        text: ''
+                        }
+                    },
+                    tooltip: {
+                        pointFormat: '{series.name} <b>{point.y:,.0f}</b><br/> человек'
+                    },
+                    plotOptions: {
+                        area: {
+                        pointStart: 0,
+                        marker: {
+                            enabled: false,
+                            symbol: 'circle',
+                            radius: 2,
+                            states: {
+                            hover: {
+                                enabled: true
+                            }
+                            }
                         }
                         }
-                    }
-                    }
-                },
-                series: [{
-                    name: 'Нарушили',
-                    color: '#FF9494',
-                    data: [20, 10, 40, 16, 23, 6, 11]
-                }, {
-                    name: 'Не нарушили',
-                    color: '#CCCCFF',
-                    data: [14, 21, 32, 16, 21, 16, 35]
-                }]
-                });
+                    },
+                    series: [{
+                        name: 'Нарушили',
+                        color: '#FF9494',
+                        data: data[0]
+                    }, {
+                        name: 'Не нарушили',
+                        color: '#CCCCFF',
+                        data: data[1]
+                    }]
+                    })
         </script>
         {% endblock %}
 
         {% block js_stuff2 %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-        <script type="text/javascript">
+        <script>
+            data = {{data_persent|safe}};
+
             Highcharts.chart('container_2', {
                 chart: {
                     plotBackgroundColor: null,
@@ -340,14 +345,11 @@
                 series: [{
                     type: 'pie',
                     innerSize: '50%',
-                    data: [
-                    ['В масках', 30],
-                    ['Без масок', 20],
-                    ['В неправильно надетых масках', 50]
-                    ],
+                    data: data,
                     colors: ['#A3C684', '#9494FF', '#FF9494']
                 }]
                 });
+            
         </script>
         {% endblock %}
 
@@ -389,7 +391,7 @@
             </script>
         {% endblock %}
         <div class="video_div">
-            <div id="div1"><iframe width="808" height="476" src="https://youtu.be/WVtTHY7mxqU" frameborder="0" allowfullscreen></iframe></div>
+            <div id="div1"><iframe width="808" height="476" src="{{ video }}" frameborder="0" allowfullscreen></iframe></div>
         </div>
     </main>
     </body>  

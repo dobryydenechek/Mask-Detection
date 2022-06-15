@@ -222,12 +222,15 @@
     </div>
 {% endblock %}
 {% block js_stuff %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
-    <script type="text/javascript">
+    <script>
+        cam = {{ cam_offenses|safe }};
+
         Highcharts.chart('container_1', {
             chart: {
                 type: 'column'
@@ -257,15 +260,15 @@
             },
             series: [{
                 name: 'В масках',
-                data: [15, 43, 21, 10],
+                data: cam[0],
                 color: '#A3C684'
                 }, {
                 name: 'В неправильно надетых масках',
-                data: [32, 26, 15, 3],
+                data: cam[2],
                 color: '#9494FF'
                 }, {
                 name: 'Без масок',
-                data: [10, 8, 2, 16],
+                data: cam[1],
                 color: '#FF9494'
             }]
         });
@@ -278,6 +281,8 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <script type="text/javascript">
+        dep = {{dep_offenses|safe}}
+
         Highcharts.chart('container_2', {
             chart: {
                 type: 'column'
@@ -307,15 +312,15 @@
             },
             series: [{
                 name: 'В масках',
-                data: [15, 9, 21, 18, 2],
+                data: dep[0],
                 color: '#A3C684'
                 }, {
                 name: 'В неправильно надетых масках',
-                data: [40, 26, 15, 32, 7],
+                data: dep[2],
                 color: '#9494FF'
                 }, {
                 name: 'Без масок',
-                data: [10, 16, 8, 2, 18],
+                data: dep[1],
                 color: '#FF9494'
             }]
         });
@@ -330,6 +335,8 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <script type="text/javascript">
+        data = {{month}}
+
         Highcharts.chart('container_3', {
 
             title: {
@@ -367,15 +374,15 @@
 
             series: [{
                 name: 'В масках',
-                data: [15, 9, 21, 18, 2, 40, 26, 15, 32, 7, 2, 10],
+                data: data[0],
                 color: '#A3C684'
                 }, {
                 name: 'В неправильно надетых масках',
-                data: [40, 26, 15, 32, 7, 2, 10, 16, 8, 2, 16, 8],
+                data: data[2],
                 color: '#9494FF'
                 }, {
                 name: 'Без масок',
-                data: [10, 16, 8, 2, 10, 16, 8, 2, 16, 8, 2, 18],
+                data: data[1],
                 color: '#FF9494'
             }],
 
